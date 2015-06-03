@@ -1,0 +1,26 @@
+---
+- name: Install Linotp PPA & set preconfig
+  apt_repository:
+    repo: "ppa:linotp/stable"
+
+- debconf: name=linotp question="linotp/tokendb/password" value="{{ mysql.password }}" vtype="password"
+- debconf: name=linotp question="linotp/apache/admin_password" value="{{ linotp.admin_password }}" vtype="password"
+- debconf: name=linotp question="linotp/mysql/ask_rootpw" value="" vtype="password"
+- debconf: name=linotp question="linotp/tokendb/password2" value="{{ mysql.password }}" vtype="password"
+- debconf: name=linotp question="linotp/tokendb/dbuser" value="{{ mysql.user }}" vtype="string"
+- debconf: name=linotp question="linotp/tokendb/dbname" value="{{ mysql.database }}" vtype="string"
+- debconf: name=linotp question="linotp/tokendb/dbtype_apache2" value="MySQL" vtype="select"
+- debconf: name=linotp question="linotp/tokendb/randompw" value="false" vtype="boolean"
+- debconf: name=linotp question="linotp/appliance boolean" value="false" vtype="boolean"
+- debconf: name=linotp question="linotp/generate_enckey" value="false" vtype="boolean"
+- debconf: name=linotp question="linotp/tokendb/file" value="/%(here)s/token.db" vtype="string"
+- debconf: name=linotp question="linotp/tokendb/dbhost" value="localhost" vtype="string"
+- debconf: name=linotp question="linotp/apache/activate" value="true" vtype="boolean"
+- debconf: name=linotp question="linotp/tokendb/dbtype" value="" vtype="select"
+- debconf: name=linotp question="linotp/mysql/ask_createdb" value="false" vtype="boolean"
+- debconf: name=linotp question="linotp/mysql/ask_createtables" value="true" vtype="boolean"
+- debconf: name=linotp question="linotp/sqlite/ask_createdb" value="false" vtype="boolean"
+- debconf: name=linotp question="linotp/apache/ssl_create" value="true"  vtype="boolean"
+
+- name: Install Linotp
+  apt: pkg=linotp state=latest

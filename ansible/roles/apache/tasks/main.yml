@@ -1,0 +1,31 @@
+---
+- name: Install Apache
+  sudo: yes
+  apt: pkg=apache2 state=latest update_cache=yes
+
+- name: Install Apache Modules
+  sudo: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - libapache2-mod-wsgi
+
+- name: Enable Apache Modules
+  apache2_module: state=present name={{ item }}
+  notify: restart apache
+  with_items:
+    - rewrite
+    - vhost_alias
+    - headers
+    - expires
+    - filter
+    - wsgi
+    - ssl
+
+- shell: apache2 -v
+  register: apache_version
+
+- name: Change default apache2.4 site
+  sudo: yes
+  template: src=vhost24.conf.tpl dest=/etc/apache2/sites-available/000-default.conf
+  notify: restart apache
+  when: apache_version.stdout.find('Apache/2.4.') != -1

@@ -1,0 +1,5 @@
+mysql:
+    root_password: mysqlrootpass
+    user: LinOTP2
+    password: LinOTP2
+    database: LinOTP2

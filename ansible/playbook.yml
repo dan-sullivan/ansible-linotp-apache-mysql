@@ -1,0 +1,11 @@
+---
+- hosts: all
+  sudo: true
+  vars_files:
+    - vars/apache.yml
+    - vars/mysql.yml
+    - vars/linotp.yml
+  roles:
+    - apache
+    - mysql
+    - linotp
